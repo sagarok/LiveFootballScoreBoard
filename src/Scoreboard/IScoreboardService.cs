@@ -11,6 +11,6 @@ public interface IScoreboardService
 {
     public Task<Guid> StartMatchAsync(string homeTeam, string awayTeam, CancellationToken cancellation = default);
     public Task FinishMatchAsync(Guid matchId, CancellationToken cancellation = default);
-    public Task UpdateScoreAsync(Guid matchId, CancellationToken cancellation = default);
+    public Task UpdateScoreAsync(Guid matchId, int homeScore, int awayScore, CancellationToken cancellation = default);
     public Task<IEnumerable<SummaryItem>> GetLiveSummaryAsync(CancellationToken cancellation = default);
 }

@@ -25,7 +25,7 @@ namespace Scoreboard
             return Task.FromResult(result);
         }
 
-        public Task UpdateScoreAsync(Guid matchId, CancellationToken cancellation = default)
+        public Task UpdateScoreAsync(Guid matchId, int homeScore, int awayScore, CancellationToken cancellation = default)
         {
             throw new NotImplementedException();
         }

@@ -12,32 +12,56 @@ public class ScoreboardServiceTests
     [Fact]
     public async Task StartMatch_NewMatch_Success()
     {
-        var result = await _sut.StartMatchAsync("home", "away");
+        var matchId = await _sut.StartMatchAsync("home", "away");
 
-        Assert.NotEqual(result, Guid.Empty);
+        Assert.NotEqual(matchId, Guid.Empty);
     }
 
     [Fact]
-    public async Task StartMatch_MatchInProgress_Fail()
+    public async Task StartMatch_MatchInProgress_Throws()
     {
         await _sut.StartMatchAsync("home", "away");
 
-        var result = await _sut.StartMatchAsync("home", "away");
-
-        Assert.NotEqual(result, Guid.Empty);
+        await Assert.ThrowsAsync<Exception>(() => _sut.StartMatchAsync("home", "away"));
     }
 
 
     [Fact]
-    public void FinishMatchAsyncTest()
+    public async Task FinishMatchAsyncTest_MatchExists_Success()
     {
+        var matchId = await _sut.StartMatchAsync("home", "away");
+
+        await _sut.FinishMatchAsync(matchId);
     }
 
     [Fact]
-    public void UpdateScoreAsyncTest()
+    public async Task FinishMatchAsyncTest_MatchDoesntExists_Throws()
     {
+        await Assert.ThrowsAsync<Exception>(() => _sut.FinishMatchAsync(Guid.NewGuid()));
     }
-    
+
+    [Fact]
+    public async Task UpdateScoreAsyncTest_MatchExists_Success()
+    {
+        var matchId = await _sut.StartMatchAsync("home", "away");
+
+        await _sut.UpdateScoreAsync(matchId, 1, 0);
+    }
+
+    [Fact]
+    public async Task UpdateScoreAsyncTest_MatchDoesntExists_Throws()
+    {
+        await Assert.ThrowsAsync<Exception>(() => _sut.UpdateScoreAsync(Guid.NewGuid(), 1, 0));
+    }
+
+    [Theory]
+    [InlineData(1, 1)]
+    public async Task UpdateScoreAsyncTest_WrongScore_Throws(int newHomeScore, int newAwayScore)
+    {
+        await Assert.ThrowsAsync<Exception>(() => _sut.UpdateScoreAsync(Guid.NewGuid(), 1, 0));
+    }
+
+
     [Fact]
     public void GetLiveSummaryTest()
     {
