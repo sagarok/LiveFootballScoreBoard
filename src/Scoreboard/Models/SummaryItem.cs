@@ -1,11 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Scoreboard.Models;
 
-namespace Scoreboard.Models;
-
-public class SummaryItem
-{
-}
+public record SummaryItem(string HomeName, int HomeScore, string AwayName, int AwayScore);
